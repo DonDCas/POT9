@@ -1,0 +1,63 @@
+body{
+    background-color: purple;
+}
+#head{
+    display: flex;
+    width: 100%;
+    height: 15%;
+    margin-bottom: 1.2%;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+
+}
+#bannerLogo{
+    width: 450px;
+    height: 100%;
+}
+#contenedor{
+    width: 100%;
+    margin-top: 20%;
+    margin-top: clamp(80px, 20vh, 300px);
+    /*border: 8px, green, solid;*/
+    flex-wrap: wrap;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+#contenedorCatalogo{
+    display: grid;
+    grid:
+    "catalogo1 catalogo2" 1fr
+    "catalogo3 catalogo4" 1fr
+    "catalogo5 catalogo6" 1fr
+    / 1fr 1fr;
+    gap: 8px;
+}
+.menuCatalogo{
+    display: flex;
+    width: 250px;
+    height: 100px;
+    border: 4px, red, solid;
+    align-content: center;
+    margin: auto;
+    margin-left: 3opx;
+    margin-right: 30px;
+    margin-bottom: 1.5%;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+.imagenMenu{
+    display: flex;
+    align-content: center;
+    width: 100px;
+    height: 100px;
+}
+.textoMenu{
+    align-content: center;
+    padding-left: 30px;
+    font-size: 20px;
+    color: bisque;
+}
