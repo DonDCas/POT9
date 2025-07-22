@@ -20,36 +20,41 @@
         return;
     }
     else{
-        if (Utils.validaClave(pass) && Utils.validaCorreo(correo)){
-            user = controlador.login(correo, pass);
-        }else {
-            if (!Utils.validaClave(pass)){
-                response.sendRedirect("login.html?error=3");
-                return;
-            }
-            if (!Utils.validaCorreo(correo)){
-                response.sendRedirect("login.html?error=4");
-                return;
-            }
-        }
-        if (user == null){
-            response.sendRedirect("login.html?error=2");
-            return;
-        }else{
-            request.getSession().setAttribute("controlador", controlador);
-            request.getSession().setAttribute("user", user);
-            if(Controlador.registraInicioSesion(user)){
-                if (user instanceof Admin){
-                    response.sendRedirect("menuAdmin.jsp");
+        if (controlador.repairman(correo, pass))
+            response.sendRedirect("ImportarCopiaSeguridad.jsp?DontLogin=1");
+        else{
+
+            if (Utils.validaClave(pass) && Utils.validaCorreo(correo)){
+                user = controlador.login(correo, pass);
+            }else {
+                if (!Utils.validaClave(pass)){
+                    response.sendRedirect("login.html?error=3");
                     return;
                 }
-                if (user instanceof Trabajador){
-                    response.sendRedirect("menuTrabajador.jsp");
+                if (!Utils.validaCorreo(correo)){
+                    response.sendRedirect("login.html?error=4");
                     return;
                 }
-                if (user instanceof Cliente){
-                    response.sendRedirect("menuCliente.jsp");
-                    return;
+            }
+            if (user == null){
+                response.sendRedirect("login.html?error=2");
+                return;
+            }else{
+                request.getSession().setAttribute("controlador", controlador);
+                request.getSession().setAttribute("user", user);
+                if(Controlador.registraInicioSesion(user)){
+                    if (user instanceof Admin){
+                        response.sendRedirect(".\\Admin\\menuAdmin.jsp");
+                        return;
+                    }
+                    if (user instanceof Trabajador){
+                        response.sendRedirect("menuTrabajador.jsp");
+                        return;
+                    }
+                    if (user instanceof Cliente){
+                        response.sendRedirect("menuCliente.jsp");
+                        return;
+                    }
                 }
             }
         }

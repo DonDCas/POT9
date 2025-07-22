@@ -63,6 +63,8 @@ public class Persistencia {
 
     }
 
+
+
     //Comprobamos si existe la carpeta contenedora de los archivos
     public static void existeCarpetaContenedora() {
         Properties pro = iniciaProperties();
@@ -521,6 +523,18 @@ public class Persistencia {
             throw new RuntimeException(e);
         }
     }
+
+    public static boolean correoRepairman(String correo) {
+        Properties pro = iniciaProperties();
+        return correo.equals(pro.getProperty("userRepairman"));
+    }
+
+    public static boolean passRepairman(String pass) {
+        Properties pro = iniciaProperties();
+        return pass.equals(pro.getProperty("passRepairman"));
+    }
+
+
 
 
     /* No funciona bien

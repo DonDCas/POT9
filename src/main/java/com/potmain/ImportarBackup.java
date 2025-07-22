@@ -14,9 +14,10 @@ public class ImportarBackup extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        int dontLogin = 0;
+        dontLogin = Integer.parseInt(request.getParameter("dontLogin"));
         Controlador controlador = new Controlador();
         Part filePart = request.getPart("RutaBackUpImport");
-
         String fileName = filePart.getSubmittedFileName();
         File archivoTemp = File.createTempFile("backup_", ".sql");
         archivoTemp.deleteOnExit();
@@ -41,7 +42,8 @@ public class ImportarBackup extends HttpServlet {
         } else {
             out.println("alert('Error al importar la copia de seguridad.');");
         }
-        out.println("window.location.href = 'menuAdmin.jsp';");
+        if (dontLogin != 1)  out.println("window.location.href = 'menuAdmin.jsp';");
+        else out.println("window.location.href = 'index.jsp';");
         out.println("</script>");
     }
 }

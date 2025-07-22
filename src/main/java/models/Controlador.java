@@ -52,6 +52,10 @@ public class Controlador implements Serializable {
         return daoProductos.readAll(dao);
     }
 
+    public boolean repairman(String correo, String pass){
+        return (Persistencia.correoRepairman(correo) && Persistencia.passRepairman(pass));
+    }
+
     // Otros metodos
 
     //Metodo que sirve para encontrar el usuario que esta intentando iniciar sesión.

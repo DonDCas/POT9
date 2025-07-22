@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Practica Obligatoria Tema 9</title>
+</head>
+<body>
+    <center>
+        <form method="get" action="methodsLogin.jsp">
+            Introduce tu correo: <input type="email" id="correoUser" title="example@correo.eso" name="correoUser"><br>
+            Introduce tu contraseña: <input type="password" id="passUser" title="example@correo.eso" name="pass"><br>
+            <input type="submit" value="Loguearse"></form><a href="index.jsp"><button id="Volver">Volver</button></a>
+        <script>
+            const params = new URLSearchParams(window.location.search);
+            if (params.get("error") === "1") {
+                alert("Formulario incompleto");
+            } else if (params.get("error") === "2") {
+                alert("Error al iniciar sesión");
+            } else if (params.get("error") === "3"){
+                alert("Esta contraseña no es valida.\n" +
+                    "- La clave debee de tener una longitud de 8 caracteres\n" +
+                    "- La clave debe de contener mayusculas\n" +
+                    "- La clave debe de contener minusculas\n" +
+                    "- La clave debe de contener numeros\n" +
+                    "- La clave debe de contener un caracter especial:" +
+                    " (-_!@/&.:,;·#$€%¬/()=?¿¡)");
+            } else if (params.get("error") === "4"){
+                alert("No se ha introducido un correo válido.");
+            }
+        </script>
+    </center>
+</body>
+</html>
