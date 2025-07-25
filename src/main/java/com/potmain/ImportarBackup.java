@@ -8,7 +8,7 @@ import models.Controlador;
 
 import java.io.*;
 
-@WebServlet("/importarBackup")
+@WebServlet("/Admin/importarBackup")
 @MultipartConfig
 public class ImportarBackup extends HttpServlet {
     @Override
@@ -43,7 +43,7 @@ public class ImportarBackup extends HttpServlet {
             out.println("alert('Error al importar la copia de seguridad.');");
         }
         if (dontLogin != 1)  out.println("window.location.href = 'menuAdmin.jsp';");
-        else out.println("window.location.href = 'index.jsp';");
+        else out.println("window.location.href = '../index.jsp';");
         out.println("</script>");
     }
 }

@@ -21,7 +21,7 @@
     }
     else{
         if (controlador.repairman(correo, pass))
-            response.sendRedirect("ImportarCopiaSeguridad.jsp?DontLogin=1");
+            response.sendRedirect("Admin\\ImportarCopiaSeguridad.jsp?DontLogin=1");
         else{
 
             if (Utils.validaClave(pass) && Utils.validaCorreo(correo)){

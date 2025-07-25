@@ -39,8 +39,10 @@ public class Persistencia {
         File archivo = new File(RUTA_CONFIG);
         try {
             // Crear carpeta si no existe
-            archivo.getParentFile().mkdirs();
-
+            File parent = archivo.getParentFile();
+            if (parent != null) {
+                parent.mkdirs();
+            }
             // Crear el archivo si no existe
             if (!archivo.exists()) {
                 archivo.createNewFile();

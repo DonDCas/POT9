@@ -225,8 +225,8 @@ public class Utils {
         }
     }
 
-    public static <T> void posicionLista(String s, Object obj, ArrayList<T> lista) {
-        System.out.println(s + (lista.indexOf(obj)+1) + " de "+ lista.size());
+    public static <T> String posicionLista(String s, Object obj, ArrayList<T> lista) {
+        return (s + (lista.indexOf(obj)+1) + " de "+ lista.size());
     }
 
     public static String limpiarComillasExtremas(String texto) {

@@ -25,12 +25,13 @@
     <li>Ver Catalogo</li>
     <li>Editar Producto</li>
     <li>Resumen de Clientes</li>
+    <li><a href="seleccionPedidosAdmin.jsp?op=1&page=1">Resumen de Pedidos</a></li>
     <li>Resumen de Trabajadores</li>
     <li>Ver Estadisticas de la aplicación</li>
-    <li>Cambiar estado de un pedido</li>
+    <li><a href="seleccionPedidosAdmin.jsp?op=2&page=1">Cambiar estado de un pedido</a></li>
     <li>Dar de alta a un trabajador</li>
     <li>Dar de baja a un trabajador</li>
-    <li>Asignar un Pedido a un Trabajador</li>
+    <li><a href="seleccionPedidosAdmin.jsp?op=3&page=1">Asignar un Pedido a un Trabajador</a></li>
     <li><a href="UltimosInicios.jsp">Últimos inicios de sesión de Usuarios</a></li>
     <li><a href="ExportarExcel.jsp">Exportar pedidos en Excel</a></li>
     <li><a href="copiasSeguridad.html">Realizar copia de seguridad de la app</a></li>

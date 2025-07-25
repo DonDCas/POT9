@@ -91,27 +91,50 @@ public class DAOManager implements Serializable {
             ProcessBuilder pb = new ProcessBuilder(
                     "mysql",
                     "-u" + USER,
+                    "-h", "127.0.0.1",
                     "-P", "3307",
                     "-p" + PASS,
                     nombreBD
             );
+
+            // Hereda errores para diagnóstico en consola
+            pb.redirectErrorStream(true);
+
             Process proceso = pb.start();
 
             try (
-                    BufferedReader br = new BufferedReader(new FileReader(rutaArchivoSQL));
-                    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(proceso.getOutputStream()))
+                    BufferedReader fileReader = new BufferedReader(new FileReader(rutaArchivoSQL));
+                    BufferedWriter procesoWriter = new BufferedWriter(new OutputStreamWriter(proceso.getOutputStream()));
+                    BufferedReader procesoOutput = new BufferedReader(new InputStreamReader(proceso.getInputStream()))
             ) {
                 String linea;
-                while ((linea = br.readLine()) != null) {
-                    bw.write(linea);
-                    bw.newLine();
+                while ((linea = fileReader.readLine()) != null) {
+                    try {
+                        procesoWriter.write(linea);
+                        procesoWriter.newLine();
+                    } catch (IOException ioEx) {
+                        System.err.println("Error escribiendo al proceso: " + ioEx.getMessage());
+                        break;
+                    }
                 }
+
+                procesoWriter.flush();
+                procesoWriter.close(); // Asegura que MySQL reciba EOF
+
+                // Lee salida del proceso (útil para detectar errores)
+                String salida;
+                while ((salida = procesoOutput.readLine()) != null) {
+                    System.out.println("[mysql] " + salida);
+                }
+
+                int exitCode = proceso.waitFor();
+                System.out.println("MySQL terminó con código: " + exitCode);
+
+                return exitCode == 0;
             }
 
-            int exitCode = proceso.waitFor();
-            return exitCode == 0;
-
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }

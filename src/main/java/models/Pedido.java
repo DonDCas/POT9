@@ -139,4 +139,14 @@ public class Pedido implements Comparable<Pedido>, Serializable {
         return (this.fechaPedido).compareTo(p.fechaPedido);
     }
 
+    public String getEstadoString() {
+        return switch (estado){
+            case 0-> "Creado";
+            case 1-> "En Preparación";
+            case 2-> "Enviado";
+            case 3-> "Cancelado";
+            //case 4-> "Entregado";
+            default -> "ERROR";
+        };
+    }
 }
