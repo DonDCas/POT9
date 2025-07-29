@@ -281,6 +281,25 @@ public class DaoPedidosSQL implements DaoPedidos, Serializable {
         return true;
     }
 
+    @Override
+    public boolean updatePedido(DAOManager dao, Pedido copiaPedido) {
+        String sentencia = "UPDATE Pedidos " +
+                "SET fechaEntrega = ?, comentario = ?, estado = ? " +
+                "WHERE id_Pedido = ?;";
+        try{
+            dao.open();
+            PreparedStatement stmt = dao.getConn().prepareStatement(sentencia);
+            stmt.setDate(1, Date.valueOf(copiaPedido.getFechaEntregaEstimada()));
+            stmt.setString(2, copiaPedido.getComentario());
+            stmt.setInt(3, copiaPedido.getEstado());
+            stmt.setString(4, copiaPedido.getId());
+            stmt.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     private ArrayList<Producto> leerResultadosArrayListProductos(ResultSet rs2, HashMap<Integer, Integer> cantidadProductos) {
         ArrayList<Producto> productosPedido = new ArrayList<>();
         Producto producto = null;

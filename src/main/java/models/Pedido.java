@@ -46,6 +46,7 @@ public class Pedido implements Comparable<Pedido>, Serializable {
         estado = pedido.getEstado();
         comentario = pedido.getComentario();
         productos = pedido.getProductos();
+        cantidadProductos = pedido.getCantidadProductos();
     }
 
     public String getId() {
@@ -82,6 +83,9 @@ public class Pedido implements Comparable<Pedido>, Serializable {
 
     public String getComentario() {
         return comentario;
+    }
+
+    public void setComentario(String comentario) { this.comentario = comentario;
     }
 
     public ArrayList<Producto> getProductos() {

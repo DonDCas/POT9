@@ -1140,7 +1140,7 @@ public class Main {
                             }
                             if (op != -1){ //Con este if comprobamos que haya pasado el try-catch
                                 if (op>0 && op<4){ //Con este if comprobamos que la opción elegida sea valida
-                                    if (!controlador.cambiaEstadoPedido(idPedido, op)) { //En este if comprobamos si se pudo modificar el estado y en caso erroneo nos avisa
+                                    if (!controlador.cambiaEstadoPedido(controlador.buscaPedidoById(idPedido), op)) { //En este if comprobamos si se pudo modificar el estado y en caso erroneo nos avisa
                                         op = -1;
                                         Utils.pulsaEnter("Opción elegida incorrecta.");
                                     }
@@ -1181,7 +1181,7 @@ public class Main {
                     } catch (Exception e) {
                         Utils.pulsaEnter("Fecha introducida en un formato incorrecto");
                     }
-                    if (controlador.cambiaFechaPedido(pedido.getId(), nuevaFecha))Utils.pulsaEnter("Modificada la fecha de entrega.");
+                    if (controlador.cambiaFechaPedido(pedido, nuevaFecha))Utils.pulsaEnter("Modificada la fecha de entrega.");
                     else {
                         Utils.pulsaEnter("No se pudo modificar la fecha de entrega.");
                         nuevaFecha = null;
@@ -1223,7 +1223,7 @@ public class Main {
         String comentario = "";
             comentario = pedirPorTeclado("Si quieres añadir un comentario escribelo a continación(sino pulsa enter): ");
             if (!comentario.isEmpty()) //Si el usuario no introduce nada y solo pulsa enter no se añadira un comentario al pedido
-                Utils.pulsaEnter(controlador.addComentario(idPedido, comentario)
+                Utils.pulsaEnter(controlador.addComentario(controlador.buscaPedidoById(idPedido), comentario)
                         ? "Comentario añadido correctamente."
                         : "No se pudo añadir el comentario.");
             else Utils.pulsaEnter("No añadiste un comentario. ");

@@ -32,4 +32,5 @@ public interface DaoPedidos {
 
     boolean quitarPedidosTrabajador(DAOManager dao, String idTrabajador, ArrayList<Pedido> pedidosAsignados);
 
+    boolean updatePedido(DAOManager dao, Pedido copiaPedido);
 }

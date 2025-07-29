@@ -5,9 +5,18 @@
     <title>Practica Obligatoria Tema 9</title>
 </head>
 <body>
-<h1> HOLA
-</h1>
-<jsp:forward page="/inicio" />
-<br/>
+<%
+    String alerta = (String) request.getSession().getAttribute("alerta");
+    if (alerta != null) {
+%>
+<script>
+    alert("<%= alerta %>");
+    window.location.href = "<%= request.getContextPath() %>/inicio";
+</script>
+<%
+    } else {
+        response.sendRedirect("inicio");
+    }
+%>
 </body>
 </html>

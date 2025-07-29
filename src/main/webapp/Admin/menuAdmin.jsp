@@ -26,11 +26,11 @@
     <li>Editar Producto</li>
     <li>Resumen de Clientes</li>
     <li><a href="seleccionPedidosAdmin.jsp?op=1&page=1">Resumen de Pedidos</a></li>
-    <li>Resumen de Trabajadores</li>
+    <li><a href="seleccionTrabajador.jsp?op=1&page=1">Resumen de Trabajadores</a></li>
     <li>Ver Estadisticas de la aplicación</li>
     <li><a href="seleccionPedidosAdmin.jsp?op=2&page=1">Cambiar estado de un pedido</a></li>
-    <li>Dar de alta a un trabajador</li>
-    <li>Dar de baja a un trabajador</li>
+    <li><a href="formularioAltaTrabajador.jsp">Dar de alta a un trabajador</a></li>
+    <li><a href="seleccionTrabajador.jsp?op=2&page=1">Dar de baja a un trabajador</a></li>
     <li><a href="seleccionPedidosAdmin.jsp?op=3&page=1">Asignar un Pedido a un Trabajador</a></li>
     <li><a href="UltimosInicios.jsp">Últimos inicios de sesión de Usuarios</a></li>
     <li><a href="ExportarExcel.jsp">Exportar pedidos en Excel</a></li>

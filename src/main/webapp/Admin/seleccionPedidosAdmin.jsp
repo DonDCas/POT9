@@ -16,21 +16,36 @@
 <%
     Controlador controlador = new Controlador();
     Object user = request.getSession().getAttribute("user");
+    if (request.getSession().getAttribute("copiaPedido") != null) request.removeAttribute("copiaPedido");
+    if (request.getSession().getAttribute("pedidoElegido") != null) request.removeAttribute("pedidoElegido");
+    if (request.getSession().getAttribute("datosCliente") != null) request.removeAttribute("datosCliente");
+    if (request.getSession().getAttribute("trabajadorAsignado") != null) request.removeAttribute("trabajadorAsignado");
     Admin admin = (Admin) user;
-    ArrayList<Pedido> pedidos = controlador.getTodosPedidos();
+    ArrayList<Pedido> pedidos = new ArrayList<>();
     String parm = request.getParameter("op");
     String parm2 = request.getParameter("page");
+    if (parm.equals("3")) pedidos = controlador.pedidosSinTrabajador();
+    else pedidos = controlador.getTodosPedidos();
     int pages = 1;
     try {
         pages = Integer.parseInt(parm2);
     } catch (Exception e) {
         pages = 1;
     }
-
     int start = (pages - 1) * 5 +1;
     int end = Math.min(pedidos.size(), pages * 5)+1;
 %>
-    <table>
+<% if (session.getAttribute("alerta") != null) { %>
+<script>alert('<%=session.getAttribute("alerta")%>');</script>
+<%
+        request.getSession().removeAttribute("trabajadorElegido");
+        request.getSession().removeAttribute("alerta");
+        request.getSession().removeAttribute("copiaPedido");
+        request.getSession().removeAttribute("datosCliente");
+        request.getSession().removeAttribute("pedidoElegido");
+    }
+%>
+    <table border="2">
         <tr>
             <th colspan="2">
                 Todos los pedidos
@@ -88,6 +103,11 @@
         <%
             }
         %>
+        <tr>
+            <td colspan="2">
+                <a href='menuAdmin.jsp'>Volver al menu del admin</a>
+            </td>
+        </tr>
     </table>
 </body>
 </html>

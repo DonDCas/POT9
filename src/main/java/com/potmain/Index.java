@@ -18,10 +18,10 @@ public class Index extends HttpServlet {
         Properties pro = Persistencia.iniciaPropertiesModif();
         boolean resultado = Boolean.parseBoolean(pro.getProperty("modoInvitado"));
         if (resultado){
-            response.sendRedirect("inicioa.html");
+            response.sendRedirect(request.getContextPath() + "/inicioa.html");
         }
         else{
-            response.sendRedirect("iniciob.html");
+            response.sendRedirect(request.getContextPath() + "/iniciob.html");
         }
 
     }

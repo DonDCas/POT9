@@ -25,32 +25,31 @@
     } catch (NumberFormatException e) {
         op = -1;
     }
-    String idPedido = request.getParameter("idPedido");
-    Pedido pedidoElegido = controlador.buscaPedidoById(idPedido);
-    PedidoClienteDataClass datosCliente = controlador.getPedidoClienteUnico(pedidoElegido.getId());
-    Trabajador trabajadorAsignado = controlador.buscaTrabajadorAsignadoAPedido(pedidoElegido.getId());
-    request.getSession().setAttribute("pedidoElegido", pedidoElegido);
-    Pedido copiaPedido = new Pedido(pedidoElegido);
-    request.getSession().setAttribute("copiaPedido", copiaPedido);
-    request.getSession().setAttribute("trabajadorElegido", trabajadorAsignado);
-    request.getSession().setAttribute("datosCliente", datosCliente);
-    if (op == 1){
-        %>
-Aqui tienes el Pedido resumido <br>
-        <%}else{
-        if (op > 1) {
-        %>
-¿Es este el pedido deseado?<br>
-<%
-        }
-    }
-    if (op>=1){
+    Pedido pedidoElegido = (Pedido) request.getSession().getAttribute("pedidoElegido");
+    Pedido copiaPedido = (Pedido) request.getSession().getAttribute("copiaPedido");
+    PedidoClienteDataClass datosCliente = (PedidoClienteDataClass) request.getSession().getAttribute("datosCliente");
+    Trabajador trabajadorAsignado = (Trabajador) request.getSession().getAttribute("trabajadorAsignado");
 %>
+<% if (session.getAttribute("alerta1") != null) { %>
+<script>alert('<%=session.getAttribute("alerta1")%>');</script>
+<%
+        session.removeAttribute("alerta1");
+} %>
+<% if (session.getAttribute("alerta2") != null) { %>
+<script>alert('<%=session.getAttribute("alerta2")%>');</script>
+<%
+        session.removeAttribute("alerta2");
+    } %>
+<% if (session.getAttribute("alerta3") != null) { %>
+<script>alert('<%=session.getAttribute("alerta3")%>');</script>
+<%
+        session.removeAttribute("alerta3");
+    } %>
 <table border="2">
     <tr>
         <th colspan="5">
             <br>
-            Pedido Elegido ID: <%=pedidoElegido.getId()%>
+            Pedido Elegido ID: <%=copiaPedido.getId()%>
             <br><br>
         </th>
     </tr>
@@ -60,7 +59,7 @@ Aqui tienes el Pedido resumido <br>
         </td>
         <td colspan="3"></td>
         <td>
-            <%=pedidoElegido.getEstadoString()%>
+            <%=copiaPedido.getEstadoString()%>
         </td>
     </tr>
     <tr>
@@ -69,7 +68,7 @@ Aqui tienes el Pedido resumido <br>
         </td>
         <td colspan="3"></td>
         <td>
-            <%=Utils.fechaAString(pedidoElegido.getFechaPedido())%>
+            <%=Utils.fechaAString(copiaPedido.getFechaPedido())%>
         </td>
     </tr>
     <tr>
@@ -78,7 +77,7 @@ Aqui tienes el Pedido resumido <br>
         </td>
         <td colspan="3"></td>
         <td>
-            <%=Utils.fechaAString(pedidoElegido.getFechaEntregaEstimada())%>
+            <%=Utils.fechaAString(copiaPedido.getFechaEntregaEstimada())%>
         </td>
     </tr>
     <tr>
@@ -87,12 +86,12 @@ Aqui tienes el Pedido resumido <br>
         </td>
         <td colspan="3"></td>
         <td>
-            <%=pedidoElegido.getComentario()%>
+            <%=copiaPedido.getComentario()%>
         </td>
     </tr>
     <tr>
         <th colspan="5">
-           DATOS CLIENTE ID: <%=datosCliente.getIdCliente()%>
+            DATOS CLIENTE ID: <%=datosCliente.getIdCliente()%>
         </th>
     </tr>
     <tr>
@@ -180,11 +179,11 @@ Aqui tienes el Pedido resumido <br>
     %>
     <tr>
         <th colspan="5">
-           PRODUCTOS
+            PRODUCTOS
         </th>
     </tr>
     <%
-        for(Producto p : pedidoElegido.getProductos()){
+        for(Producto p : copiaPedido.getProductos()){
 
     %>
     <tr>
@@ -195,13 +194,13 @@ Aqui tienes el Pedido resumido <br>
             <%=p.getModelo()%>
         </td>
         <td>
-            <%=pedidoElegido.getCantidadProductos().get(p.getId())%>
+            <%=copiaPedido.getCantidadProductos().get(p.getId())%>
         </td>
         <td>
             <%=p.getPrecio()%>€ PVP
         </td>
         <td>
-            <%=p.getPrecio()*pedidoElegido.getCantidadProductos().get(p.getId())%>€
+            <%=p.getPrecio()*copiaPedido.getCantidadProductos().get(p.getId())%>€
         </td>
     </tr>
     <%
@@ -212,7 +211,7 @@ Aqui tienes el Pedido resumido <br>
             Precio Total Sin IVA
         </td>
         <td>
-            <%=pedidoElegido.calculaTotalPedidoSinIVA()%>€
+            <%=copiaPedido.calculaTotalPedidoSinIVA()%>€
         </td>
     </tr>
     <tr>
@@ -220,7 +219,7 @@ Aqui tienes el Pedido resumido <br>
             IVA a repercutir
         </td>
         <td>
-            <%=pedidoElegido.calculaIVAPedido(DataIVA.IVA)%>€
+            <%=copiaPedido.calculaIVAPedido(DataIVA.IVA)%>€
         </td>
     </tr>
     <tr>
@@ -228,28 +227,39 @@ Aqui tienes el Pedido resumido <br>
             IVA
         </td>
         <td>
-            <%=pedidoElegido.calculaTotalPedidoConIVA(DataIVA.IVA)%>€
+            <%=copiaPedido.calculaTotalPedidoConIVA(DataIVA.IVA)%>€
         </td>
     </tr>
 </table>
-<a href="seleccionPedidosAdmin.jsp?op=<%=parm%>&page=1">Volver a la selección de pedidos</a>
-<br>
-<%
-    if((op == 2) && admin!=null) {
-%>
-<a href="menuModifPedidoAdmin.jsp">Modificar este pedido</a>
-<%
-    }
-%>
-<%
-    if((op == 3) && admin != null) {
-%>
-<a href="seleccionTrabajador.jsp?op=3&page=1">Adjudicar este pedido a un trabajador</a>
-<%
-    }
-%>
-<%
-    }
-%>
+
+<table>
+    <form method="post" action="modifPedidoAdmin">
+        <tr>
+            <th colspan="4">Indica los cambios pertinentes</th>
+        </tr>
+        <tr>
+            <td colspan="2">
+                Estado: <br>
+                <input type="radio" value="0" name="estado"> Creación <br>
+                <input type="radio" value="1" name="estado"> En Preparación <br>
+                <input type="radio" value="2" name="estado"> Enviado <br>
+                <input type="radio" value="3" name="estado"> Cancelado <br>
+            </td>
+            <td>
+                Fecha de entrega estimada: <br>
+                <input type="date" name="fechaEstimada"> <br>
+            </td>
+            <td>
+                Modificar comentario: <br>
+                <input type="text" name="comentario"> <br>
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2"><Input type="submit"></th>
+    </form>
+            <th><a href="guardarCambiosPedido"><button>Guardar cambios</button></a></th>
+            <th><a href="seleccionPedidosAdmin.jsp?op=2&page=1"><button>Volver a la selección de Pedidos sin guardar</button></a></th>
+        </tr>
+</table>
 </body>
 </html>

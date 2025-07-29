@@ -178,14 +178,9 @@ public class Controlador implements Serializable {
         return daoPedidos.readById(dao, idPedido);
     }
 
-    public boolean cambiaEstadoPedido(String idPedido, int nuevoEstado) {
-        if (daoPedidos.updateEstadoPedido(dao, idPedido, nuevoEstado)){
-            Persistencia.registraLogPedidoModificado(idPedido, String.valueOf(nuevoEstado), "Estado");
-            Trabajador trabajadorAsignado = buscaTrabajadorAsignadoAPedido(idPedido);
-            if (trabajadorAsignado != null){
-                String mensaje = "Pedido: "+idPedido+" ha modificado su estado";
-                Telegram.modificaPedidoMensajeTelegram(mensaje,String.valueOf(trabajadorAsignado.getIdTelegram()));
-            }
+    public boolean cambiaEstadoPedido(Pedido copiaPedido, int nuevoEstado) {
+        copiaPedido.setEstado(nuevoEstado);
+        if (copiaPedido.getEstado() == nuevoEstado){
             return true;
         }
         return false;
@@ -500,14 +495,9 @@ public class Controlador implements Serializable {
         return daoProductos.updateProducto(dao, original.getId(), productoTemp);
     }
 
-    public boolean addComentario(String idPedido, String comentario) {
-        if (daoPedidos.updateComentarioPedido(dao, idPedido, comentario)){
-            Persistencia.registraLogPedidoModificado(idPedido, comentario, "AddComentario");
-            Trabajador trabajadorAsignado = buscaTrabajadorAsignadoAPedido(idPedido);
-            if (trabajadorAsignado != null){
-                String mensaje = "Se ha añadido un nuevo comentario al pedido "+idPedido;
-                Telegram.modificaPedidoMensajeTelegram(mensaje,String.valueOf(trabajadorAsignado.getIdTelegram()));
-            }
+    public boolean addComentario(Pedido copiaPedido, String comentario) {
+        copiaPedido.setComentario(comentario);
+        if (copiaPedido.getComentario().equals(comentario)){
             return true;
         }
         return false;
@@ -580,14 +570,9 @@ public class Controlador implements Serializable {
         return 1;
     }
 
-    public boolean cambiaFechaPedido(String idPedido, LocalDate nuevaFecha) {
-        if (daoPedidos.updateFechaEntrega(dao, idPedido, nuevaFecha)){
-            Persistencia.registraLogPedidoModificado(idPedido, String.valueOf(nuevaFecha), "Cambio Fecha");
-            Trabajador trabajadorAsignado = buscaTrabajadorAsignadoAPedido(idPedido);
-            if (trabajadorAsignado != null){
-                String mensaje = "Pedido: "+idPedido+" ha sido actualizado la Fecha de entrega a "+ Utils.fechaAString(nuevaFecha);
-                Telegram.modificaPedidoMensajeTelegram(mensaje,String.valueOf(trabajadorAsignado.getIdTelegram()));
-            }
+    public boolean cambiaFechaPedido(Pedido copiaPedido, LocalDate nuevaFecha) {
+        copiaPedido.setFechaEntregaEstimada(nuevaFecha);
+        if (copiaPedido.getFechaEntregaEstimada().equals(nuevaFecha)){
             return true;
         }
         return false;
@@ -701,5 +686,47 @@ public class Controlador implements Serializable {
     public boolean importarCopiaDeSeguridad(String rutaArchivo) {
         if (rutaArchivo.contains("\"")) rutaArchivo = Utils.limpiarComillasExtremas(rutaArchivo);
         return dao.restaurarBackup(rutaArchivo);
+    }
+
+    public boolean clonarPedidoCopia(Pedido pedidoElegido, Pedido copiaPedido) {
+        if (daoPedidos.updatePedido(dao, copiaPedido)){
+            Trabajador trabajadorAsignado = buscaTrabajadorAsignadoAPedido(copiaPedido.getId());
+            if (pedidoElegido.getEstado()!=copiaPedido.getEstado()) {
+                pedidoElegido.setEstado(copiaPedido.getEstado());
+                Persistencia.registraLogPedidoModificado(pedidoElegido.getId(), String.valueOf(copiaPedido.getEstado()), "Estado");
+                if (trabajadorAsignado != null){
+                    String mensaje = "Pedido: "+copiaPedido.getId()+" ha modificado su estado";
+                    Telegram.modificaPedidoMensajeTelegram(mensaje,String.valueOf(trabajadorAsignado.getIdTelegram()));
+                }
+            }
+            if(pedidoElegido.getFechaEntregaEstimada()!=copiaPedido.getFechaEntregaEstimada()){
+                pedidoElegido.setFechaEntregaEstimada(copiaPedido.getFechaEntregaEstimada());
+                if (copiaPedido.getFechaEntregaEstimada() == null) {
+                    Persistencia.registraLogPedidoModificado(pedidoElegido.getId(), "Cancelacion Pedido", "Cancelacion de Pedido");
+                    if (trabajadorAsignado != null){
+                        String mensaje = "Pedido: "+copiaPedido.getId()+" ha sido actualizado a CANCELADO";
+                        Telegram.modificaPedidoMensajeTelegram(mensaje,String.valueOf(trabajadorAsignado.getIdTelegram()));
+                    }
+                }else{
+                    Persistencia.registraLogPedidoModificado(copiaPedido.getId(), String.valueOf(copiaPedido.getFechaEntregaEstimada()),
+                            "Cambio Fecha");
+                    if (trabajadorAsignado != null){
+                        String mensaje = "Pedido: "+copiaPedido.getId()+" ha sido actualizado la Fecha de entrega a "+
+                                Utils.fechaAString(copiaPedido.getFechaEntregaEstimada());
+                        Telegram.modificaPedidoMensajeTelegram(mensaje,String.valueOf(trabajadorAsignado.getIdTelegram()));
+                    }
+                }
+            }
+            if(!pedidoElegido.getComentario().equals(copiaPedido.getComentario())){
+                pedidoElegido.setComentario(copiaPedido.getComentario());
+                Persistencia.registraLogPedidoModificado(copiaPedido.getId(), copiaPedido.getComentario(), "AddComentario");
+                if (trabajadorAsignado != null){
+                    String mensaje = "Se ha añadido un nuevo comentario al pedido "+copiaPedido.getId();
+                    Telegram.modificaPedidoMensajeTelegram(mensaje,String.valueOf(trabajadorAsignado.getIdTelegram()));
+                }
+            }
+            return true;
+        }
+        return false;
     }
 }
