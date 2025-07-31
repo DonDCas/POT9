@@ -91,7 +91,7 @@ public class DAOManager implements Serializable {
             ProcessBuilder pb = new ProcessBuilder(
                     "mysql",
                     "-u" + USER,
-                    "-h", "127.0.0.1",
+                   // "-h", "127.0.0.1",
                     "-P", "3307",
                     "-p" + PASS,
                     nombreBD

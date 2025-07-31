@@ -10,6 +10,7 @@ import models.Controlador;
 import models.Trabajador;
 import utils.Utils;
 import utils.UtilsPass;
+import utils.UtilsWeb;
 
 import java.io.IOException;
 
@@ -19,10 +20,7 @@ public class MethodAltaTrabajador extends HttpServlet {
         resp.setContentType("text/html");
         Controlador controlador = new Controlador();
         Admin admin = (Admin) req.getSession().getAttribute("user");
-        if (admin == null) {
-            req.getSession().setAttribute("alerta", "ERROR GARRAFAL, USER INACTIVO, VOLVIENDO AL INICIO");
-            resp.sendRedirect("index.jsp");
-        }
+        UtilsWeb.usuarioNull(admin, req, resp, "index.jsp");
         Trabajador trabajadorExistente = (Trabajador) req.getSession().getAttribute("trabajadorExistente");
         if (trabajadorExistente != null) {
             if (Utils.validaClave(req.getParameter("pass"))) {

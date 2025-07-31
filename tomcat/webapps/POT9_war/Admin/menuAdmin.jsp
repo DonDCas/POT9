@@ -17,17 +17,26 @@
   Object user = request.getSession().getAttribute("user");
   Admin admin = (Admin) user;
   String lastSesion = controlador.recuperarInicioSesion(user);
+  String alerta = String.valueOf(request.getSession().getAttribute("alerta"));
+  if (alerta != "null") {
+%>
+    <script>
+        alert("<%=alerta%>");
+    </script>
+<%
+      request.getSession().removeAttribute("alerta");
+  }
 %>
 <h1>Bienvenido, <%= admin.getNombre() %> tu ultima sesión fue: <%= lastSesion %> </h1>
 
 <p>¿Que deseas hacer?</p>
 <ul>
-    <li>Ver Catalogo</li>
-    <li>Editar Producto</li>
-    <li>Resumen de Clientes</li>
+    <li><a href="../verCatalogo.jsp?page=1">Ver Catalogo</a></li>
+    <li><a href="../verCatalogo.jsp?page=1&op=1">Editar Producto</a></li>
+    <li><a href="seleccionClientes.jsp?page=1">Resumen de Clientes</a></li>
     <li><a href="seleccionPedidosAdmin.jsp?op=1&page=1">Resumen de Pedidos</a></li>
     <li><a href="seleccionTrabajador.jsp?op=1&page=1">Resumen de Trabajadores</a></li>
-    <li>Ver Estadisticas de la aplicación</li>
+    <li><a href="estadisticasApp.jsp">Estadisticas de la aplicación</a></li>
     <li><a href="seleccionPedidosAdmin.jsp?op=2&page=1">Cambiar estado de un pedido</a></li>
     <li><a href="formularioAltaTrabajador.jsp">Dar de alta a un trabajador</a></li>
     <li><a href="seleccionTrabajador.jsp?op=2&page=1">Dar de baja a un trabajador</a></li>

@@ -1,10 +1,10 @@
 package utils;
 
-import models.Pedido;
-import persistencia.Persistencia;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.IOException;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public class Utils {
     public static final String CARACTERESESP = "-_!@/&.:,;·#$€%¬/()=?¿¡";
 
     public static void limpiarPantalla(){
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 500; i++) {
             System.out.println();
         }
     }

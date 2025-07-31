@@ -164,6 +164,33 @@ public class Controlador implements Serializable {
         }
     }
 
+    public boolean editarProducto(Producto producto, String nuevaMarca,String nuevoModelo,
+                                  String nuevaDescripcion, float nuevaPrecio, int nuevaRelevancia) {
+        if(producto == null) return false;
+        boolean modificado = false;
+        if (!producto.getMarca().equals(nuevaMarca)) {
+            producto.setMarca(nuevaMarca);
+            modificado = true;
+        }
+        if(!producto.getModelo().equals(nuevoModelo)){
+            producto.setModelo(nuevoModelo);
+            modificado = true;
+        }
+        if(!producto.getDescripcion().equals(nuevaDescripcion)){
+            producto.setDescripcion(nuevaDescripcion);
+            modificado = true;
+        }
+        if(producto.getPrecio() != nuevaPrecio){
+            producto.setPrecio(nuevaPrecio);
+            modificado = true;
+        }
+        if(producto.getRelevancia() != nuevaRelevancia){
+            producto.setRelevancia(nuevaRelevancia);
+            modificado = true;
+        }
+        return modificado;
+    }
+
     //Metodo que devuelve un Arraylist contodos los pedidos realizados
     public ArrayList<Pedido> getTodosPedidos() {
         return daoPedidos.readAllPedidos(dao);
@@ -728,5 +755,41 @@ public class Controlador implements Serializable {
             return true;
         }
         return false;
+    }
+
+    public int numPedidosSoloCreados(ArrayList<Pedido> pedidos) {
+        int cuenta = 0;
+        for (Pedido pedido : pedidos) {
+            if (pedido.getEstado() == 0) cuenta++;
+        }
+        return cuenta;
+    }
+
+    public int numPedidosEnPreparacion(ArrayList<Pedido> pedidos) {
+        int cuenta = 0;
+        for (Pedido pedido : pedidos) {
+            if (pedido.getEstado() == 1) cuenta++;
+        }
+        return cuenta;
+    }
+
+    public int numPedidosEnviados(ArrayList<Pedido> pedidos) {
+        int cuenta = 0;
+        for (Pedido pedido : pedidos) {
+            if (pedido.getEstado() == 2) cuenta++;
+        }
+        return cuenta;
+    }
+
+    public int numPedidosCancelados(ArrayList<Pedido> pedidos) {
+        int cuenta = 0;
+        for (Pedido pedido : pedidos) {
+            if (pedido.getEstado() == 3) cuenta++;
+        }
+        return cuenta;
+    }
+
+    public ArrayList<Pedido> getPedidosByCliente(Cliente cliente) {
+        return daoPedidos.readByidCliente(dao, cliente.getId());
     }
 }

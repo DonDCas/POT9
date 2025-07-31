@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import models.Controlador;
 import models.Pedido;
 import models.Trabajador;
+import utils.UtilsWeb;
 
 import java.io.IOException;
 
@@ -17,6 +18,7 @@ public class adjudicarPedido extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
         Controlador controlador = new Controlador();
+        UtilsWeb.usuarioNull(req.getSession().getAttribute("user"), req, resp, "/index.html");
         Trabajador trabajadorElegio = (Trabajador) req.getSession().getAttribute("trabajadorElegido");
         Pedido pedidoElegido = (Pedido) req.getSession().getAttribute("pedidoElegido");
         if (trabajadorElegio != null) {

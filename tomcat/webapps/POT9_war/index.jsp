@@ -14,9 +14,11 @@
     window.location.href = "<%= request.getContextPath() %>/inicio";
 </script>
 <%
+        request.getSession().removeAttribute("alerta");
     } else {
         response.sendRedirect("inicio");
     }
+    request.getSession().invalidate();
 %>
 </body>
 </html>

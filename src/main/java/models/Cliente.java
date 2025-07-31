@@ -6,6 +6,7 @@ import DAO.DaoPedidosSQL;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 public class Cliente extends Usuario implements Serializable {
@@ -130,5 +131,9 @@ public class Cliente extends Usuario implements Serializable {
             if (p.getEstado() <= 2) cont++;
         }
         return cont;
+    }
+
+    public ArrayList<Pedido> getPedidos(Controlador controlador) {
+        return controlador.getPedidosByCliente(this);
     }
 }

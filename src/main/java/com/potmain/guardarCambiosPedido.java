@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import models.Admin;
 import models.Controlador;
 import models.Pedido;
+import utils.UtilsWeb;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,6 +20,7 @@ public class guardarCambiosPedido extends HttpServlet {
         resp.setContentType("text/html;charset=UTF-8");
         Controlador controlador = new Controlador();
         Admin admin = (Admin) req.getSession().getAttribute("user");
+        UtilsWeb.usuarioNull(admin, req, resp, "/index.html");
         Pedido copiaPedido = (Pedido) req.getSession().getAttribute("copiaPedido");
         Pedido pedidoElegido = (Pedido) req.getSession().getAttribute("pedidoElegido");
         PrintWriter out = resp.getWriter();

@@ -17,7 +17,7 @@ public class Main {
     public static void main(String[] args) {
         Controlador controlador = new Controlador();
         do{
-            Menu.logo();
+            //Menu.logo();
             Object user = menuInicio(controlador);
             if(user != null) menuUsuario(controlador,user);
         }while (true);

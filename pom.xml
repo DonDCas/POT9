@@ -21,8 +21,8 @@
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
-            <version>6.1.0</version>
-            <scope>provided</scope>
+            <version>6.0.0</version>
+            <scope>provided</scope> <!-- Solo para compilación -->
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -58,6 +58,11 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
             <version>5.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
